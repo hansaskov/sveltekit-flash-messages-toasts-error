@@ -17,6 +17,7 @@
 	};
 
 	flash.subscribe(($flash) => {
+		console.log($flash?.message)
 		if (!$flash) return;
 
 		if ($flash.type === 'error') {
