@@ -6,19 +6,25 @@
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import { AppShell, AppBar, Toast, toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
-	import { getFlash } from 'sveltekit-flash-message/client';
-	import { page } from '$app/stores';
-
-	const flash = getFlash(page);
-
 	const errorToast: ToastSettings = {
 		message: '',
 		background: 'variant-filled-error'
 	};
+	import { getFlash } from 'sveltekit-flash-message/client';
+	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
+
+	const flash = getFlash(page);
+
+	let isGotoNavigated = false;
+	afterNavigate(({type}) => {
+		isGotoNavigated = ['goto'].includes(type as string);
+	})
 
 	flash.subscribe(($flash) => {
-		console.log($flash?.message)
 		if (!$flash) return;
+		if ($flash.pathname != $page.url.pathname) return;
+		if (!isGotoNavigated) return;
 
 		if ($flash.type === 'error') {
 			errorToast.message = $flash.message;

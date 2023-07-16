@@ -3,6 +3,10 @@
 // and what to do when importing types
 declare namespace App {
 	interface PageData {
-		flash?: { type: 'success' | 'error'; message: string };
+		flash?: {
+			type: 'success' | 'error';
+			message: string;
+			pathname: string;
+		};
 	}
 }
